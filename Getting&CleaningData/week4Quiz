@@ -1,0 +1,58 @@
+download.file('https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv', destfile = "gdp.csv")
+ f <- read.csv("gdp.csv", skip=4)
+ names(f)<-c('CountryCode','Rank','X.2','CountryName','GDP')
+
+
+ ##(1)download file, do as below  
+n <- names(f)
+ans <- lapply(n, function(x) strsplit(x, "wgtp"))
+
+##(2)download file, do as below  
+vals <- f[c(5:nrow(f)),5]
+res=vector()
+for(i in vals){
+  i<-gsub(",","",i)
+  i<-gsub(" ","",i)
+  ##v<-as.numeric(i)
+  
+  if(grep("^[0-9]+$",i)==TRUE){
+    v<-as.numeric(i)
+    res<-append(res,v)
+  }
+  
+}
+print(mean(res))
+
+##(3)countryNames<-f$X.2; grep("^United", countryNames)
+
+##(4)
+download.file('https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv', destfile = "ed.csv")
+e <- read.csv("ed.csv")
+library(dplyr)
+e1<-e%>%select('CountryCode','Special.Notes')%>%filter(e1$Special.Notes!="")
+for(r in e1){
+  ##if(grep("^Fiscal year end: June",r)==1){
+  print(grep("^Fiscal year end: June",r))
+}
+
+##(5)
+install.packages("quantmod")
+library(quantmod)
+amzn = getSymbols("AMZN",auto.assign=FALSE)
+sampleTimes = index(amzn)
+s<-as.vector(grep("^2012",sampleTimes))
+st <-sampleTimes[s]
+install.packages("lubridate")
+library(lubridate)
+c=0
+st<-as.list(st)
+for(a in st){
+  if(wday(a)==2){
+    c<-c+1
+  }
+}
+
+
+
+
+
